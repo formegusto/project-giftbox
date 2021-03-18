@@ -3,19 +3,43 @@ import GiftRoomComponent from '../components/GiftRoomComponent';
 
 function GiftRoomContainer() {
     const [opened, setOpened] = useState<boolean>(false);
+    const refBox = useRef<HTMLDivElement>(null);
     const refBoxTop = useRef<HTMLDivElement>(null);
     const refBoxFront = useRef<HTMLDivElement>(null);
     const refBoxBack = useRef<HTMLDivElement>(null);
     const refBoxLeft = useRef<HTMLDivElement>(null);
     const refBoxRight = useRef<HTMLDivElement>(null);
-    const refLetterTop = useRef<HTMLDivElement>(null);
+    const refLetterTop = useRef<HTMLSpanElement>(null);
+    const refLetter = useRef<HTMLDivElement>(null);
+
+    const scaleUpLetter = useCallback(function(this: HTMLDivElement, e: TransitionEvent) {
+        this.removeEventListener('transitionend',scaleUpLetter);
+        if(refLetter.current) {
+            if(refBox.current) {
+                refBox.current.style.transition = "1s";
+                refBox.current.style.transform = "rotate3d(0,0,0,45deg)";
+                refLetter.current.style.transform = "translate3d(-40vh, 30px, -100px)";
+                refLetter.current.style.width = "50vw";
+                refLetter.current.style.height = "50vh";
+            }
+        }
+    }, []);
+
+    const showLetter = useCallback(function(this: HTMLSpanElement, e: TransitionEvent) {
+        this.removeEventListener('transitionend', showLetter);
+        if(refLetter.current) {
+            refLetter.current.style.transform = "translateY(300px)";
+            refLetter.current.addEventListener('transitionend', scaleUpLetter);
+        }
+    }, [scaleUpLetter]);
 
     const openLetter = useCallback(function(this: HTMLDivElement, e: TransitionEvent) {
         this.removeEventListener('transitionend', openLetter);
         if(refLetterTop.current) {
-            refLetterTop.current.style.transform = "rotateX(180deg)";
+            refLetterTop.current.style.transform = "rotateX(-180deg) translate3d(0,0,0px)";
+            refLetterTop.current.addEventListener('transitionend', showLetter);
         }
-    }, []);
+    }, [showLetter]);
 
     const openAll = useCallback(function(this: HTMLDivElement, e: TransitionEvent) {
         this.removeEventListener('transitionend', openAll);
@@ -49,12 +73,14 @@ function GiftRoomContainer() {
     return (
         <GiftRoomComponent 
             changeOpen={changeOpen}
+            refBox={refBox}
             refBoxFront={refBoxFront}
             refBoxTop={refBoxTop}
             refBoxBack={refBoxBack}
             refBoxLeft={refBoxLeft}
             refBoxRight={refBoxRight}
             refLetterTop={refLetterTop}
+            refLetter={refLetter}
             />
     );
 }

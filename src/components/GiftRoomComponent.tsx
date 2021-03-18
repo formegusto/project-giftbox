@@ -3,12 +3,14 @@ import styled from 'styled-components';
 
 type Props = {
     changeOpen: (e: React.MouseEvent) => void;
+    refBox: React.RefObject<HTMLDivElement>;
     refBoxTop: React.RefObject<HTMLDivElement>;
     refBoxFront: React.RefObject<HTMLDivElement>;
     refBoxBack: React.RefObject<HTMLDivElement>;
     refBoxLeft: React.RefObject<HTMLDivElement>;
     refBoxRight: React.RefObject<HTMLDivElement>;
     refLetterTop: React.RefObject<HTMLSpanElement>;
+    refLetter: React.RefObject<HTMLDivElement>;
 }
 
 function GiftRoomComponent(props: Props) {
@@ -16,7 +18,7 @@ function GiftRoomComponent(props: Props) {
         <GiftRoomBlock>
             {/* 블락 자체에 컨테이너가 걸려야 함 */}
             <GiftBoxBlock onClick={(e) => props.changeOpen(e)}>
-                <GiftBox>
+                <GiftBox ref={props.refBox}>
                     <BoxOne ref={props.refBoxFront}>
                         <BoxTwo ref={props.refBoxTop}/>
                     </BoxOne>
@@ -25,8 +27,7 @@ function GiftRoomComponent(props: Props) {
                         <BoxFour ref={props.refBoxBack}/>
                         <BoxSix ref={props.refBoxLeft}/>
                         <LetterBlock>
-                            
-                            <Letter/>
+                            <Letter ref={props.refLetter}/>
                             <LetterBody/>
                             <LetterTop ref={props.refLetterTop}/>
                         </LetterBlock>
@@ -47,6 +48,9 @@ const LetterBody = styled.span`
     border-bottom: 25px solid transparent;
     border-right: 40px solid rgb(255,255,255);
     border-left: 40px solid rgb(255,255,255);
+
+    transform: translate3d(0,0,-2px);
+    transform-origin: 100% 0;
 `;
 
 const Letter = styled.div`
@@ -55,8 +59,10 @@ const Letter = styled.div`
     width: 100%;
     height: 100%;
 
-    background-color: red;
-    /* transform: translateY(300px); */
+    border-radius: .5rem;
+    background-color: rgb(255,255,255);
+
+    transform: translate3d(0,0,-1px);
 `;
 
 const LetterTop = styled.span`
@@ -66,11 +72,12 @@ const LetterTop = styled.span`
     height: 0;
 
     border-top: 25px solid transparent;
-    border-bottom: 25px solid rgb(0,0,0);
+    border-bottom: 26px solid rgb(0,0,0);
     border-right: 40px solid transparent;
     border-left: 40px solid transparent;
 
     transition: 1s;
+    transform: translate3d(0,0,-3px);
     transform-origin: 50% 100%;
 `
 
