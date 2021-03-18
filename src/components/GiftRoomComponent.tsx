@@ -8,6 +8,7 @@ type Props = {
     refBoxBack: React.RefObject<HTMLDivElement>;
     refBoxLeft: React.RefObject<HTMLDivElement>;
     refBoxRight: React.RefObject<HTMLDivElement>;
+    refLetterTop: React.RefObject<HTMLSpanElement>;
 }
 
 function GiftRoomComponent(props: Props) {
@@ -23,12 +24,71 @@ function GiftRoomComponent(props: Props) {
                         <BoxThree ref={props.refBoxRight}/>
                         <BoxFour ref={props.refBoxBack}/>
                         <BoxSix ref={props.refBoxLeft}/>
+                        <LetterBlock>
+                            
+                            <Letter/>
+                            <LetterBody/>
+                            <LetterTop ref={props.refLetterTop}/>
+                        </LetterBlock>
                     </BoxFive>
                 </GiftBox>
             </GiftBoxBlock>
         </GiftRoomBlock>
     );
 }
+
+const LetterBody = styled.span`
+    position: absolute;
+
+    width: 0;
+    height: 0;
+
+    border-top: 25px solid rgb(255,255,255);
+    border-bottom: 25px solid transparent;
+    border-right: 40px solid rgb(255,255,255);
+    border-left: 40px solid rgb(255,255,255);
+`;
+
+const Letter = styled.div`
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: red;
+    /* transform: translateY(300px); */
+`;
+
+const LetterTop = styled.span`
+    position: absolute;
+
+    width: 0;
+    height: 0;
+
+    border-top: 25px solid transparent;
+    border-bottom: 25px solid rgb(0,0,0);
+    border-right: 40px solid transparent;
+    border-left: 40px solid transparent;
+
+    transition: 1s;
+    transform-origin: 50% 100%;
+`
+
+const LetterBlock = styled.div`
+    position: absolute;
+    display: flex;
+
+    left: 50%;
+    top: 50%;
+
+    width: 80px;
+    height: 50px;
+    margin: -25px 0 0 -40px;
+
+    transform: rotateX(90deg) translate3d(0,40px,0);
+    background-color: rgba(255,255,255, 1);
+    transform-style: preserve-3d;
+`;
 
 const GiftRoomBlock = styled.div`
     display: flex;
@@ -83,7 +143,7 @@ const BoxOne = styled.div`
     left: 50%;
     top: 50%;
 
-    margin: -150px -150px 0;
+    margin: -150px 0 0 -150px;
 
     width: 300px;
     height: 300px;

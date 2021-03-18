@@ -8,6 +8,14 @@ function GiftRoomContainer() {
     const refBoxBack = useRef<HTMLDivElement>(null);
     const refBoxLeft = useRef<HTMLDivElement>(null);
     const refBoxRight = useRef<HTMLDivElement>(null);
+    const refLetterTop = useRef<HTMLDivElement>(null);
+
+    const openLetter = useCallback(function(this: HTMLDivElement, e: TransitionEvent) {
+        this.removeEventListener('transitionend', openLetter);
+        if(refLetterTop.current) {
+            refLetterTop.current.style.transform = "rotateX(180deg)";
+        }
+    }, []);
 
     const openAll = useCallback(function(this: HTMLDivElement, e: TransitionEvent) {
         this.removeEventListener('transitionend', openAll);
@@ -15,8 +23,9 @@ function GiftRoomContainer() {
             refBoxLeft.current.style.transform = "rotateY(-180deg)";
             refBoxBack.current.style.transform = "rotateX(180deg)";
             refBoxRight.current.style.transform = "rotateY(180deg)";
+            refBoxRight.current.addEventListener('transitionend', openLetter);
         }
-    }, []);
+    }, [openLetter]);
 
     const openTop = useCallback(function(this: HTMLDivElement, e: TransitionEvent) {
         this.removeEventListener('transitionend', openTop);
@@ -45,6 +54,7 @@ function GiftRoomContainer() {
             refBoxBack={refBoxBack}
             refBoxLeft={refBoxLeft}
             refBoxRight={refBoxRight}
+            refLetterTop={refLetterTop}
             />
     );
 }
