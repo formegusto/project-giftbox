@@ -1,11 +1,11 @@
 import React from 'react';
+import GiftRoomComponent from './components/GiftRoomComponent';
 
 function App() {
   return (
-    <>
-      Project Gift Box
-    </>
+    <GiftRoomComponent />
   );
 }
+
 
 export default App;
