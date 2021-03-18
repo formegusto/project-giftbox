@@ -5,20 +5,25 @@ type Props = {
     changeOpen: (e: React.MouseEvent) => void;
     refBoxTop: React.RefObject<HTMLDivElement>;
     refBoxFront: React.RefObject<HTMLDivElement>;
+    refBoxBack: React.RefObject<HTMLDivElement>;
+    refBoxLeft: React.RefObject<HTMLDivElement>;
+    refBoxRight: React.RefObject<HTMLDivElement>;
 }
 
 function GiftRoomComponent(props: Props) {
     return (
         <GiftRoomBlock>
+            {/* 블락 자체에 컨테이너가 걸려야 함 */}
             <GiftBoxBlock onClick={(e) => props.changeOpen(e)}>
                 <GiftBox>
                     <BoxOne ref={props.refBoxFront}>
                         <BoxTwo ref={props.refBoxTop}/>
                     </BoxOne>
-                    <BoxThree/>
-                    <BoxFour/>
-                    <BoxFive/>
-                    <BoxSix/>
+                    <BoxFive>
+                        <BoxThree ref={props.refBoxRight}/>
+                        <BoxFour ref={props.refBoxBack}/>
+                        <BoxSix ref={props.refBoxLeft}/>
+                    </BoxFive>
                 </GiftBox>
             </GiftBoxBlock>
         </GiftRoomBlock>
@@ -66,7 +71,7 @@ const GiftBox = styled.div`
     transform-style: preserve-3d;
     z-index: 1;
 
-    & > div {
+    & div {
         box-sizing: border-box;
         border: 1px solid rgb(255,255,255);
         transition: 1s;
@@ -120,7 +125,7 @@ const BoxThree = styled.div`
     width: 300px;
     height: 300px;
 
-    transform: rotateY(-90deg);
+    transform: rotateY(90deg);
     transform-origin: 100% 0;
 
     background-color: rgba(102, 102, 102, .7);
@@ -136,7 +141,8 @@ const BoxFour = styled.div`
     width: 300px;
     height: 300px;
 
-    transform: translateZ(-300px);
+    transform: rotateX(90deg);
+    transform-origin: 50% 0;
 
     background-color: rgba(153, 153, 153, .7);
 `;
@@ -151,10 +157,17 @@ const BoxFive = styled.div`
     width: 300px;
     height: 300px;
 
+    transform-style: preserve-3d;
     transform: rotateX(90deg);
     transform-origin: 50% 100%;
 
     background-color: rgba(170, 170, 170, .7);
+
+    & > div {
+        box-sizing: border-box;
+        border: 1px solid rgb(255,255,255);
+        transition: 1s;
+    }
 `;
 
 const BoxSix = styled.div`
@@ -167,7 +180,7 @@ const BoxSix = styled.div`
     width: 300px;
     height: 300px;
 
-    transform: rotateY(90deg);
+    transform: rotateY(-90deg);
     transform-origin: 0 50%;
 
     background-color: rgba(204, 204, 204, .7);
