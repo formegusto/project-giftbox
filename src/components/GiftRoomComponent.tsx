@@ -1,16 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function GiftRoomComponent() {
+type Props = {
+    changeOpen: (e: React.MouseEvent) => void;
+    refBoxTop: React.RefObject<HTMLDivElement>;
+    refBoxFront: React.RefObject<HTMLDivElement>;
+}
+
+function GiftRoomComponent(props: Props) {
     return (
         <GiftRoomBlock>
-            <GiftBoxBlock>
-                <BoxOne/>
-                <BoxTwo/>
-                <BoxThree/>
-                <BoxFour/>
-                <BoxFive/>
-                <BoxSix/>
+            <GiftBoxBlock onClick={(e) => props.changeOpen(e)}>
+                <GiftBox>
+                    <BoxOne ref={props.refBoxFront}>
+                        <BoxTwo ref={props.refBoxTop}/>
+                    </BoxOne>
+                    <BoxThree/>
+                    <BoxFour/>
+                    <BoxFive/>
+                    <BoxSix/>
+                </GiftBox>
             </GiftBoxBlock>
         </GiftRoomBlock>
     );
@@ -34,14 +43,34 @@ const GiftRoomBlock = styled.div`
 `;
 
 const GiftBoxBlock = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 300px;
+    height: 300px;
+
+    transform-style: preserve-3d;
+    transform: translateZ(-1000px);
+
+    cursor:pointer;
+`;
+
+const GiftBox = styled.div`
     position: relative;
 
     width: 300px;
     height: 300px;
 
-    background-color: rgb(255,255,255);
-    transform: rotate3d(1,1,0, -30deg);
+    transform: rotate3d(1,1,0, -45deg);
     transform-style: preserve-3d;
+    z-index: 1;
+
+    & > div {
+        box-sizing: border-box;
+        border: 1px solid rgb(255,255,255);
+        transition: 1s;
+    }
 `;
 
 const BoxOne = styled.div`
@@ -54,7 +83,15 @@ const BoxOne = styled.div`
     width: 300px;
     height: 300px;
 
-    background-color: rgba(0,0,0,.7);
+    transform-style: preserve-3d;
+    background-color: rgba(255,255,255,.7);
+    transform-origin: 50% 100%;
+
+    & > div {
+        box-sizing: border-box;
+        border: 1px solid rgb(255,255,255);
+        transition: 1s;
+    }
 `;
 
 const BoxTwo = styled.div`
@@ -68,7 +105,7 @@ const BoxTwo = styled.div`
     height: 300px;
 
     transform: rotateX(-90deg);
-    transform-origin: 50% 0;
+    transform-origin: 100% 0;
 
     background-color: rgba(51, 51, 51, .7);
 `;

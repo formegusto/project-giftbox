@@ -1,9 +1,9 @@
 import React from 'react';
-import GiftRoomComponent from './components/GiftRoomComponent';
+import GiftRoomContainer from './containers/GiftRoomContainer';
 
 function App() {
   return (
-    <GiftRoomComponent />
+    <GiftRoomContainer />
   );
 }
 
