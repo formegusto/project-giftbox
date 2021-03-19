@@ -11,6 +11,8 @@ type Props = {
     refBoxRight: React.RefObject<HTMLDivElement>;
     refLetterTop: React.RefObject<HTMLSpanElement>;
     refLetter: React.RefObject<HTMLDivElement>;
+    refLetterBottom: React.RefObject<HTMLDivElement>;
+    refCloseButton: React.RefObject<HTMLButtonElement>;
 }
 
 function GiftRoomComponent(props: Props) {
@@ -27,7 +29,10 @@ function GiftRoomComponent(props: Props) {
                         <BoxFour ref={props.refBoxBack}/>
                         <BoxSix ref={props.refBoxLeft}/>
                         <LetterBlock>
-                            <Letter ref={props.refLetter}/>
+                            <Letter ref={props.refLetter}>
+                                <CloseButton ref={props.refCloseButton}>Close</CloseButton>
+                                <LetterBottom ref={props.refLetterBottom}/>
+                            </Letter>
                             <LetterBody/>
                             <LetterTop ref={props.refLetterTop}/>
                         </LetterBlock>
@@ -37,6 +42,37 @@ function GiftRoomComponent(props: Props) {
         </GiftRoomBlock>
     );
 }
+
+const LetterBottom = styled.div`
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    transform-origin: 50% 0%;
+    border-bottom-left-radius: .5rem;
+    border-bottom-right-radius: .5rem;
+
+    background-color: rgb(255,255,255);
+`;
+
+const CloseButton = styled.button`
+    padding: .5rem 1rem;
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    letter-spacing: .5rem;
+    color: rgb(255,255,255);
+    background-color: transparent;
+    border: 1px solid rgb(255,255,255);
+    border-radius: 1rem;
+
+    transition: 1s;
+    transform: rotateX(180deg);
+    opacity: 0;
+
+    cursor: pointer;
+`;
 
 const LetterBody = styled.span`
     position: absolute;
@@ -55,14 +91,19 @@ const LetterBody = styled.span`
 
 const Letter = styled.div`
     position: absolute;
+    display: flex;
+    align-items: center;
+    flex-direction: column-reverse;
 
     width: 100%;
     height: 100%;
 
-    border-radius: .5rem;
+    border-bottom-left-radius: .5rem;
+    border-bottom-right-radius: .5rem;
     background-color: rgb(255,255,255);
 
     transform: translate3d(0,0,-1px);
+    transform-style: preserve-3d;
 `;
 
 const LetterTop = styled.span`

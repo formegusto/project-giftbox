@@ -11,6 +11,19 @@ function GiftRoomContainer() {
     const refBoxRight = useRef<HTMLDivElement>(null);
     const refLetterTop = useRef<HTMLSpanElement>(null);
     const refLetter = useRef<HTMLDivElement>(null);
+    const refLetterBottom = useRef<HTMLDivElement>(null);
+    const refCloseButton = useRef<HTMLButtonElement>(null);
+
+    const showCloseButton = useCallback(function(this: HTMLDivElement, e: TransitionEvent) {
+        this.removeEventListener('transitionend', showCloseButton);
+        if(refCloseButton.current) {
+            refCloseButton.current.style.opacity = "1";
+            refCloseButton.current.style.transform = "rotateX(180deg) translateY(-90px)";
+            if(refLetterBottom.current) {
+                refLetterBottom.current.style.transform = "rotateX(-180deg)";
+            }
+        }
+    }, []);
 
     const scaleUpLetter = useCallback(function(this: HTMLDivElement, e: TransitionEvent) {
         this.removeEventListener('transitionend',scaleUpLetter);
@@ -18,12 +31,16 @@ function GiftRoomContainer() {
             if(refBox.current) {
                 refBox.current.style.transition = "1s";
                 refBox.current.style.transform = "rotate3d(0,0,0,45deg)";
-                refLetter.current.style.transform = "translate3d(-40vh, 30px, -100px)";
-                refLetter.current.style.width = "50vw";
-                refLetter.current.style.height = "50vh";
+                refLetter.current.style.transform = "translate3d(0, 300px, -100px)";
+                refLetter.current.style.width = "640px";
+                refLetter.current.style.height = "200px";
+                if(refLetterBottom.current) {
+                    refLetterBottom.current.style.width = "640px";
+                }
+                refLetter.current.addEventListener('transitionend', showCloseButton);
             }
         }
-    }, []);
+    }, [showCloseButton]);
 
     const showLetter = useCallback(function(this: HTMLSpanElement, e: TransitionEvent) {
         this.removeEventListener('transitionend', showLetter);
@@ -81,6 +98,8 @@ function GiftRoomContainer() {
             refBoxRight={refBoxRight}
             refLetterTop={refLetterTop}
             refLetter={refLetter}
+            refLetterBottom={refLetterBottom}
+            refCloseButton={refCloseButton}
             />
     );
 }
