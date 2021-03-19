@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 type Props = {
     changeOpen: (e: React.MouseEvent) => void;
+    closeBox: (e: React.MouseEvent) => void;
     refBox: React.RefObject<HTMLDivElement>;
     refBoxTop: React.RefObject<HTMLDivElement>;
     refBoxFront: React.RefObject<HTMLDivElement>;
@@ -30,10 +31,11 @@ function GiftRoomComponent(props: Props) {
                         <BoxSix ref={props.refBoxLeft}/>
                         <LetterBlock>
                             <Letter ref={props.refLetter}>
-                                <CloseButton ref={props.refCloseButton}>Close</CloseButton>
+                                <CloseButton ref={props.refCloseButton} onClick={props.closeBox}>Close</CloseButton>
                                 <LetterBottom ref={props.refLetterBottom}/>
                             </Letter>
                             <LetterBody/>
+                            <LetterBack/>
                             <LetterTop ref={props.refLetterTop}/>
                         </LetterBlock>
                     </BoxFive>
@@ -46,7 +48,8 @@ function GiftRoomComponent(props: Props) {
 const LetterBottom = styled.div`
     position: absolute;
 
-    width: 100%;
+    opacity: 0;
+    width: 640px;
     height: 100%;
 
     transform-origin: 50% 0%;
@@ -72,6 +75,21 @@ const CloseButton = styled.button`
     opacity: 0;
 
     cursor: pointer;
+`;
+
+const LetterBack = styled.span`
+    position: absolute;
+
+    width: 0;
+    height: 0;
+
+    border-top: 25px solid rgb(255,255,255);
+    border-bottom: 25px solid transparent;
+    border-right: 40px solid rgb(255,255,255);
+    border-left: 40px solid rgb(255,255,255);
+
+    transform: translate3d(0,0,0);
+    transform-origin: 100% 0;
 `;
 
 const LetterBody = styled.span`

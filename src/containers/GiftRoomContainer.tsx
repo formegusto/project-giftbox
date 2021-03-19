@@ -14,12 +14,84 @@ function GiftRoomContainer() {
     const refLetterBottom = useRef<HTMLDivElement>(null);
     const refCloseButton = useRef<HTMLButtonElement>(null);
 
+    const closeGiftBoxTop = useCallback(function(this: HTMLDivElement, e: TransitionEvent) {
+        this.removeEventListener('transitionend', closeGiftBoxTop);
+        if(refBoxTop.current) {
+            refBoxTop.current.style.transform = "";
+            setOpened(false);
+        }
+    }, []);
+
+    const closeGiftBoxFront = useCallback(function(this: HTMLDivElement, e: TransitionEvent) {
+        this.removeEventListener('transitionend', closeGiftBoxFront);
+        if(refBoxFront.current) {
+            if(refBoxTop.current) {
+                refBoxTop.current.style.transform = "rotate3d(1, 0, 0, -270deg)";
+                refBoxFront.current.style.transform = "";
+                refBoxFront.current.addEventListener('transitionend', closeGiftBoxTop);
+            }
+        }
+    }, [closeGiftBoxTop]);
+
+    const closeGiftBox = useCallback(function(this: HTMLSpanElement, e: TransitionEvent) {
+        this.removeEventListener('transitionend', closeGiftBox);
+        if(refBox.current) {
+            refBox.current.style.transition = "1s";
+            refBox.current.style.transform = "";
+            if(refBoxBack.current && refBoxLeft.current && refBoxRight.current) {
+                refBoxLeft.current.style.transform = "";
+                refBoxBack.current.style.transform = "";
+                refBoxRight.current.style.transform = "";
+                refBoxRight.current.addEventListener('transitionend', closeGiftBoxFront);
+            }
+        }
+    }, [closeGiftBoxFront]);
+
+    const closeLetterTop = useCallback(function(this: HTMLDivElement, e: TransitionEvent) {
+        this.removeEventListener('transitionend', closeLetterTop);
+        if(refLetterTop.current) {
+            refLetterTop.current.style.transform = "";
+            refLetterTop.current.addEventListener('transitionend', closeGiftBox);
+        }
+    }, [closeGiftBox]);
+
+    const putInLetter = useCallback(function(this: HTMLDivElement, e: TransitionEvent) {
+        this.removeEventListener('transitionend', putInLetter);
+        if(refLetter.current) {
+            refLetter.current.style.transform = "";
+            refLetter.current.addEventListener('transitionend', closeLetterTop);
+        }
+    }, [closeLetterTop]);
+
+    const hideLetter = useCallback(function(this: HTMLDivElement, e: TransitionEvent) {
+        this.removeEventListener('transitionend', hideLetter);
+        if(refLetter.current) {
+            refLetter.current.style.width = "";
+            refLetter.current.style.height = "";
+            refLetter.current.addEventListener('transitionend', putInLetter);
+        }
+    }, [putInLetter]);
+
+    const closeBox = useCallback((e: React.MouseEvent) => {
+        if(refCloseButton.current) {
+            refCloseButton.current.style.opacity = "";
+            refCloseButton.current.style.transform = "";
+
+            if(refLetterBottom.current) {
+                refLetterBottom.current.style.opacity = "";
+                refLetterBottom.current.style.transform = "";
+                refLetterBottom.current.addEventListener('transitionend', hideLetter);
+            }
+        }
+    }, [hideLetter]);
+
     const showCloseButton = useCallback(function(this: HTMLDivElement, e: TransitionEvent) {
         this.removeEventListener('transitionend', showCloseButton);
         if(refCloseButton.current) {
             refCloseButton.current.style.opacity = "1";
             refCloseButton.current.style.transform = "rotateX(180deg) translateY(-90px)";
             if(refLetterBottom.current) {
+                refLetterBottom.current.style.opacity = "1";
                 refLetterBottom.current.style.transform = "rotateX(-180deg)";
             }
         }
@@ -34,9 +106,6 @@ function GiftRoomContainer() {
                 refLetter.current.style.transform = "translate3d(0, 300px, -100px)";
                 refLetter.current.style.width = "640px";
                 refLetter.current.style.height = "200px";
-                if(refLetterBottom.current) {
-                    refLetterBottom.current.style.width = "640px";
-                }
                 refLetter.current.addEventListener('transitionend', showCloseButton);
             }
         }
@@ -90,6 +159,8 @@ function GiftRoomContainer() {
     return (
         <GiftRoomComponent 
             changeOpen={changeOpen}
+            closeBox={closeBox}
+
             refBox={refBox}
             refBoxFront={refBoxFront}
             refBoxTop={refBoxTop}
